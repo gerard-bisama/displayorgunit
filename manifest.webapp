@@ -1,0 +1,20 @@
+{
+  "launch_path": "/src/app.js",
+  "default_locale": "en",
+  "activities": {
+    "dhis": {
+      "href": "*"
+    }
+  },
+  "appType": "APP",
+  "name": "Display orgunits",
+  "version": "1.0.0",
+  "description": "App for browsing and render list of Orgunits in json format",
+  "developer": {
+    "name": "Gerard"
+  },
+  "icons": {
+    "48": "icon.png"
+  },
+  "manifest_generated_at": "Thu Dec 01 2016 10:27:06 GMT+0100 (CET)"
+}
