@@ -1,3 +1,4 @@
+import {config,init} from 'd2/lib/d2';
 /**
  *  setup for test/development mode
  */
@@ -7,7 +8,7 @@ var production = false;
 const testURL = 'http://localhost:8080/api';
 const basicAuth = `Basic ${btoa('admin:district')}`;
 
-/**
+/*
  * Setup for production mode
  */
 const manifest = require('json!../manifest.webapp');
@@ -24,7 +25,9 @@ const headers = production ? { 'Content-Type': 'application/json' } : {Authoriza
 const serverUrl = production ? productionURL : testURL;
 
 console.log("serverUrl:", serverUrl, "headers:", headers);
-
+/***********************************************************/
+config.baseUrl = serverUrl;
+config.headers=headers;
 /**
  * Default options object to send along with each request
  */
@@ -115,3 +118,57 @@ export function loadAllUnits() {
         .then(response => response.json())
         .then(({ organisationUnits }) => organisationUnits);
 }
+
+export function GetInstanceInfo() {
+	var ObjectModel;
+	ObjectModel="Mon model";
+	console.log("Model 123");
+	/*
+	getInstance(d2 => {
+			//console.log(Object.keys(d2.models));
+			ObjectModel="Mon model";
+			console.log("Model 123");
+		});*/
+	return ObjectModel;
+}
+export function GetUser()
+{
+	init()
+	  .then(d2 => {
+		d2.models.organisationUnit.list().then(onlySuccessResponses);
+		
+	  });
+}
+export function GetAjaxRequest(fn)
+{
+	var urlRequest=`${serverUrl}/organisationUnits/?paging=false&fields=:all`;
+	var request = new XMLHttpRequest();
+	request.open('GET',urlRequest, true);
+	request.setRequestHeader( 'Content-Type',   'application/json' );
+	request.setRequestHeader( 'Accept', 'application/json' );
+	request.setRequestHeader("Authorization", basicAuth); 
+	request.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        //console.log(myArr);
+        fn(myArr);
+    }
+    else
+    {
+		console.log("Error: "+ "Initial request failed!")
+	}
+	};
+	
+	request.send();
+	
+}
+function GetSyncAjaxRequest()
+{
+	GetAjaxRequest(function(data)
+	{
+		//console.log(data);
+		return data;
+	});
+	
+}
+
